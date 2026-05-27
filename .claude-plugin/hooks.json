@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$(find $HOME/.claude/plugins/cache -name inject-knowledge.sh 2>/dev/null | head -1)\"",
+            "command": "python3 -c \"import json,subprocess,os; d=json.load(open(os.path.expanduser('~/.claude/plugins/installed_plugins.json'))); [subprocess.run(['bash',v[0]['installPath']+'/scripts/inject-knowledge.sh']) for k,v in d['plugins'].items() if 'claude-echolog' in k and v]\" 2>/dev/null || true",
             "timeout": 5000
           }
         ]
@@ -42,7 +42,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$(find $HOME/.claude/plugins/cache -name inject-post-compact.sh 2>/dev/null | head -1)\"",
+            "command": "python3 -c \"import json,subprocess,os; d=json.load(open(os.path.expanduser('~/.claude/plugins/installed_plugins.json'))); [subprocess.run(['bash',v[0]['installPath']+'/scripts/inject-post-compact.sh']) for k,v in d['plugins'].items() if 'claude-echolog' in k and v]\" 2>/dev/null || true",
             "timeout": 5000
           }
         ]
@@ -54,7 +54,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$(find $HOME/.claude/plugins/cache -name cleanup-session.sh 2>/dev/null | head -1)\"",
+            "command": "python3 -c \"import json,subprocess,os; d=json.load(open(os.path.expanduser('~/.claude/plugins/installed_plugins.json'))); [subprocess.run(['bash',v[0]['installPath']+'/scripts/cleanup-session.sh']) for k,v in d['plugins'].items() if 'claude-echolog' in k and v]\" 2>/dev/null || true",
             "timeout": 5000
           }
         ]

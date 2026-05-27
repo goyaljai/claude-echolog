@@ -1,6 +1,6 @@
 {
   "name": "claude-echolog",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Stop rediscovering. Every fix, insight, and pattern Claude finds is silently logged to ~/claude-echolog.md and injected at the start of every session. Zero commands. Zero effort. Claude learns from every session — forever.",
   "author": {
     "name": "goyaljai",
