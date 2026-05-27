@@ -9,6 +9,7 @@
   "license": "MIT",
   "homepage": "https://github.com/goyaljai/claude-echolog",
   "repository": "https://github.com/goyaljai/claude-echolog",
+  "hooks": "./.claude-plugin/hooks.json",
   "keywords": [
     "memory",
     "logging",

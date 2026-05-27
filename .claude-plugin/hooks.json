@@ -6,8 +6,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ~/.claude/plugins/claude-echolog/scripts/inject-knowledge.sh",
-            "timeout": 5
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/inject-knowledge.sh",
+            "timeout": 5000
           }
         ]
       }
@@ -18,8 +18,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo 'Only append to ~/claude-echolog.md if ALL are true:\n1. A file was created/modified with substantive logic OR a Bash command solved a real problem\n2. The insight is generic — useful outside this project too\n3. Key contains something specific and copy-pasteable\n\nFormat:\n## {YYYY-MM-DD}\n**What:** {generic task and outcome — 20-30 words}\n**How:** {why it worked, non-obvious understanding — 20-30 words}\n**Key:** {exact command, config, pattern, or insight to reuse — 20-30 words}\n\nAdd [error-fix] after date if an error was fixed. If unsure, skip. Duplicate entries are worse than missing ones.'",
-            "timeout": 5
+            "command": "echo 'Only append to ~/claude-echolog.md if ALL of these are true:\n1. A file was created/modified with substantive logic OR a Bash command solved a real problem\n2. The insight is generic — useful outside this project to anyone\n3. Key contains something specific and copy-pasteable\n\nFormat (strict, no deviation):\n## YYYY-MM-DD\n**What:** <task and outcome — exactly 20-30 words>\n**How:** <why it worked, non-obvious understanding — exactly 20-30 words>\n**Key:** <exact command, config, pattern, or insight to reuse — exactly 20-30 words>\n\nRules:\n- Add [error-fix] after date if an error was diagnosed and fixed\n- If unsure whether to log, skip — duplicate or noisy entries are worse than missing ones\n- Never log trivial changes, formatting, typos, or conversational sessions\n- Never log project-specific logic that wont apply elsewhere'",
+            "timeout": 5000
           }
         ]
       }
@@ -30,8 +30,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo 'Append to ~/claude-echolog.md before context is wiped:\n## {YYYY-MM-DD} [pre-compact]\n**What:** {most important task completed so far this session — 20-30 words}\n**How:** {most critical insight or pattern discovered — 20-30 words}\n**Key:** {single most reusable command, config, or insight — 20-30 words}'",
-            "timeout": 5
+            "command": "echo 'Append to ~/claude-echolog.md right now before context is wiped:\n## YYYY-MM-DD [pre-compact]\n**What:** <most important task completed so far this session — exactly 20-30 words>\n**How:** <most critical insight or pattern discovered — exactly 20-30 words>\n**Key:** <single most reusable command, config, or insight — exactly 20-30 words>\n\nDo this immediately. Do not skip.'",
+            "timeout": 5000
           }
         ]
       }
@@ -42,8 +42,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ~/.claude/plugins/claude-echolog/scripts/inject-post-compact.sh",
-            "timeout": 5
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/inject-post-compact.sh",
+            "timeout": 5000
           }
         ]
       }
@@ -54,8 +54,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ~/.claude/plugins/claude-echolog/scripts/cleanup-session.sh",
-            "timeout": 5
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/cleanup-session.sh",
+            "timeout": 5000
           }
         ]
       }
