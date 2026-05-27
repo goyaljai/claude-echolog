@@ -61,18 +61,23 @@ Five hooks. All automatic. Nothing to remember.
 
 ## Install
 
-### Option 1: Claude Code Marketplace
+> **Run these commands in your terminal — not inside a Claude session.**
+> Claude may refuse to run `claude plugin` commands as a safety measure.
+
+### Option 1: Claude Code Marketplace (recommended)
+
+Open your terminal and run:
 
 ```bash
 claude plugin marketplace add goyaljai/claude-echolog
-claude plugin install claude-echolog
+claude plugin install claude-echolog@claude-echolog-marketplace
 ```
 
 ### Option 2: Manual
 
 ```bash
-git clone https://github.com/goyaljai/claude-echolog ~/personal/claude-echolog
-cd ~/personal/claude-echolog
+git clone https://github.com/goyaljai/claude-echolog ~/claude-echolog
+cd ~/claude-echolog
 bash bin/setup.sh
 ```
 
