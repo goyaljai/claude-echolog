@@ -1,8 +1,13 @@
 #!/bin/bash
-# After compact — reinject full knowledge base so Claude resumes with full context
+# PostCompact — use systemMessage (hookSpecificOutput not supported here)
 if [ -f "$HOME/claude-echolog.md" ]; then
-  echo "=== EchoLog Knowledge Base ==="
-  cat "$HOME/claude-echolog.md"
-  echo "=== End EchoLog ==="
-  echo "Use the above knowledge base to resume this session with full context."
+  python3 -c "
+import json
+with open('$HOME/claude-echolog.md') as f:
+    content = f.read()
+output = {
+    'systemMessage': '=== EchoLog Knowledge Base ===\n' + content + '\n=== End EchoLog ===\nUse the above knowledge base to resume this session with full context.'
+}
+print(json.dumps(output))
+"
 fi

@@ -1,10 +1,17 @@
 # claude-echolog
 
-**Stop rediscovering. Every fix, insight, and pattern Claude finds is silently logged and never forgotten.**
+> **Stop rediscovering. Every fix, insight, and pattern Claude finds is silently logged and never forgotten.**
 
-You set up Kafka last month and hit a weird rebalancing issue. Claude fixed it. New project, same stack — Claude starts from scratch. Again.
+[![Version](https://img.shields.io/badge/version-0.5.0-blue)](https://github.com/goyaljai/claude-echolog)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-Claude%20Code-purple)](https://claude.ai/code)
+[![Zero Setup](https://img.shields.io/badge/setup-zero%20effort-orange)]()
 
-`claude-echolog` fixes that. Every meaningful task, fix, and insight Claude discovers gets automatically logged to a local knowledge base. Every new session, Claude reads it first. No commands. No manual effort. Just use Claude normally.
+---
+
+You set up Kafka last month. Claude fixed a nasty rebalancing bug. New project, same stack — Claude starts from scratch. **Again.**
+
+`claude-echolog` fixes that. Every meaningful insight gets logged. Every new session, Claude already knows.
 
 ---
 
@@ -12,84 +19,68 @@ You set up Kafka last month and hit a weird rebalancing issue. Claude fixed it. 
 
 ```
 You work normally
-    → Claude completes something meaningful
-    → Silently appended to ~/claude-echolog.md
-
-Next session starts
-    → Claude reads ~/claude-echolog.md automatically
-    → Already knows your Kafka fix, your Docker flag, your PDF trick
-    → Builds on it instead of starting from scratch
+    ↓
+Claude completes something meaningful
+    ↓
+~/claude-echolog.md  ← silently appended
+    ↓
+Next session starts → Claude reads it → builds on it
 ```
 
 ---
 
-## The Log Format
+## Log Format
 
-Every entry is 3 lines — strict, generic, reusable:
+3 lines. Strict. Generic. Reusable by anyone.
 
-```
+```markdown
 ## 2026-05-27
-**What:** Fixed Kafka consumer group rebalancing issue on slow message processors.
-**How:** Low timeout values cause rebalance loops — both configs must be tuned together.
-**Key:** max.poll.interval.ms=600000, session.timeout.ms=30000 in application.yml
+**What:** Fixed Kafka consumer group rebalancing issue on slow message processors in Spring Boot.
+**How:** Low timeout values cause rebalance loops — both configs must be tuned together to fix.
+**Key:** max.poll.interval.ms=600000, session.timeout.ms=30000 in application.yml consumer config.
 ```
 
-```
+```markdown
 ## 2026-05-27 [error-fix]
-**What:** npm install failing with EACCES permission denied on fresh Mac setup.
-**How:** npm global directory owned by root — needs ownership transferred to current user.
+**What:** npm install failing with EACCES permission denied on fresh Mac machine setup.
+**How:** npm global directory owned by root — transferring ownership to current user fixes permanently.
 **Key:** sudo chown -R $(whoami) ~/.npm
 ```
 
-**Works for everyone** — development, design, presentations, PDF manipulation, anything Claude does.
+Works for **everyone** — code, design, presentations, PDF, data, anything.
 
 ---
 
 ## Hooks
 
-Five hooks. All automatic. Nothing to remember.
-
-| Hook | Does |
-|------|------|
-| `UserPromptSubmit` | Injects knowledge base on first prompt of session |
-| `PostToolUse` | Logs after substantive work — strict criteria, no noise |
-| `PreCompact` | Logs before context wipe — nothing lost mid-session |
-| `PostCompact` | Reinjects full knowledge base after compaction |
-| `Stop` | Writes final session summary, resets for next session |
+| Hook | Trigger | Does |
+|------|---------|------|
+| `UserPromptSubmit` | Every session start | Injects `~/claude-echolog.md` into context |
+| `PostToolUse` | After Write / Edit / Bash | Prompts Claude to log if work was meaningful |
+| `PreCompact` | Before `/compact` | Logs before context wipe — nothing lost |
+| `PostCompact` | After `/compact` | Re-injects knowledge base to resume context |
+| `Stop` | On `/exit` | Writes final session summary |
 
 ---
 
 ## Install
 
-### Option 1: Claude Code Marketplace (recommended)
+> Run in your **terminal** — not inside a Claude session.
 
-**If installing from your terminal:**
 ```bash
 claude plugin marketplace add goyaljai/claude-echolog
 claude plugin install claude-echolog@claude-echolog-marketplace
 ```
 
-**If installing from inside a Claude Code session** (use `!` prefix to run directly):
+**Inside a Claude session?** Use `!` prefix:
 ```
 ! claude plugin marketplace add goyaljai/claude-echolog
 ! claude plugin install claude-echolog@claude-echolog-marketplace
 ```
 
-> The `!` prefix bypasses Claude's safety check — it runs the command directly in your terminal.
-
-**If Claude refuses and you want it to run it for you**, paste this prompt:
-```
-`claude plugin` is a built-in Claude Code CLI command. Please run:
-claude plugin marketplace add goyaljai/claude-echolog
-claude plugin install claude-echolog@claude-echolog-marketplace
-```
-
-### Option 2: Manual
-
+**Then activate** (one-time consent):
 ```bash
-git clone https://github.com/goyaljai/claude-echolog ~/claude-echolog
-cd ~/claude-echolog
-bash bin/setup.sh
+touch ~/.claude/echolog-consent.flag
 ```
 
 ---
@@ -102,65 +93,35 @@ bash bin/setup.sh
 
 ---
 
-## Your Knowledge Base
-
-Lives at `~/claude-echolog.md`. Plain markdown. Yours forever.
-
-- Open it anytime to read what was built and learned
-- Share it with teammates for instant knowledge transfer
-- It compounds — every session makes Claude smarter
-
----
-
-## What Gets Logged
-
-**Yes:**
-- Non-obvious configs and commands that solved real problems
-- Error fixes with exact reproduction and solution
-- Patterns and approaches that work across projects
-
-**No:**
-- Trivial changes (typo fixes, formatting)
-- Project-specific logic that won't apply elsewhere
-- Conversational sessions with no real output
-
-The rule: *if a teammate starting fresh would benefit from knowing this, it gets logged.*
-
----
-
 ## What Runs On Your Machine
 
-Full transparency — 5 scripts, all open source:
+| Script | When | What |
+|--------|------|------|
+| `inject-knowledge.sh` | Session start | Reads `~/claude-echolog.md` → injects into context |
+| `post-tool-prompt.sh` | After tool use | Reminds Claude to log meaningful work |
+| `pre-compact-prompt.sh` | Before compact | Reminds Claude to log before wipe |
+| `inject-post-compact.sh` | After compact | Re-injects knowledge base |
+| `cleanup-session.sh` | On exit | Deletes session flag + prompts final log |
 
-| Script | When | What it does |
-|--------|------|-------------|
-| `inject-knowledge.sh` | Every prompt (once per session) | Reads `~/claude-echolog.md` and injects into context |
-| `post-tool-prompt.sh` | After every Write/Edit/Bash | Reminds Claude to log if work was meaningful |
-| `pre-compact-prompt.sh` | Before `/compact` | Reminds Claude to log before context wipe |
-| `inject-post-compact.sh` | After `/compact` | Re-reads `~/claude-echolog.md` to restore context |
-| `cleanup-session.sh` | On `/exit` | Deletes session flag + prompts Claude for final log entry |
+No network calls. No telemetry. Writes only to `~/claude-echolog.md`.
 
-All scripts write only to `~/claude-echolog.md`. No network calls. No telemetry. No data leaves your machine.
-
-View source: [github.com/goyaljai/claude-echolog/tree/main/scripts](https://github.com/goyaljai/claude-echolog/tree/main/scripts)
+[View source →](https://github.com/goyaljai/claude-echolog/tree/main/scripts)
 
 ---
 
-## First-Run Consent
+## Your Knowledge Base
 
-On first install, the plugin will show a summary of what it does and wait for your explicit approval before activating. To approve:
+`~/claude-echolog.md` — plain markdown, local, yours forever.
 
-```bash
-touch ~/.claude/echolog-consent.flag
-```
-
-Nothing runs until you do this.
+- Read it anytime
+- Share with teammates for instant knowledge transfer  
+- It compounds — every session makes Claude smarter
 
 ---
 
 ## Privacy
 
-Everything stays local. `~/claude-echolog.md` never leaves your machine unless you choose to share it.
+Everything stays on your machine. `~/claude-echolog.md` never leaves unless you choose to share it.
 
 ---
 
