@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "claude-echolog: Persistent memory for Claude — silently logs every insight, fix, and pattern across all sessions.",
-    "version": "0.3.0"
+    "version": "0.4.0"
   },
   "plugins": [
     {
@@ -17,7 +17,7 @@
         "ref": "main"
       },
       "description": "Stop rediscovering. Every fix, insight, and pattern Claude finds is silently logged to ~/claude-echolog.md and injected at the start of every session. Zero commands. Zero effort. Claude learns from every session — forever.",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "author": {
         "name": "goyaljai",
         "url": "https://github.com/goyaljai"

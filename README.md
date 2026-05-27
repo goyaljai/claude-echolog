@@ -128,6 +128,36 @@ The rule: *if a teammate starting fresh would benefit from knowing this, it gets
 
 ---
 
+## What Runs On Your Machine
+
+Full transparency — 5 scripts, all open source:
+
+| Script | When | What it does |
+|--------|------|-------------|
+| `inject-knowledge.sh` | Every prompt (once per session) | Reads `~/claude-echolog.md` and injects into context |
+| `post-tool-prompt.sh` | After every Write/Edit/Bash | Reminds Claude to log if work was meaningful |
+| `pre-compact-prompt.sh` | Before `/compact` | Reminds Claude to log before context wipe |
+| `inject-post-compact.sh` | After `/compact` | Re-reads `~/claude-echolog.md` to restore context |
+| `cleanup-session.sh` | On `/exit` | Deletes session flag + prompts Claude for final log entry |
+
+All scripts write only to `~/claude-echolog.md`. No network calls. No telemetry. No data leaves your machine.
+
+View source: [github.com/goyaljai/claude-echolog/tree/main/scripts](https://github.com/goyaljai/claude-echolog/tree/main/scripts)
+
+---
+
+## First-Run Consent
+
+On first install, the plugin will show a summary of what it does and wait for your explicit approval before activating. To approve:
+
+```bash
+touch ~/.claude/echolog-consent.flag
+```
+
+Nothing runs until you do this.
+
+---
+
 ## Privacy
 
 Everything stays local. `~/claude-echolog.md` never leaves your machine unless you choose to share it.
