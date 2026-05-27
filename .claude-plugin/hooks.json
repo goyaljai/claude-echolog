@@ -18,7 +18,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo 'Only append to ~/claude-echolog.md if ALL of these are true:\n1. A file was created/modified with substantive logic OR a Bash command solved a real problem\n2. The insight is generic — useful outside this project to anyone\n3. Key contains something specific and copy-pasteable\n\nFormat (strict, no deviation):\n## YYYY-MM-DD\n**What:** <task and outcome — exactly 20-30 words>\n**How:** <why it worked, non-obvious understanding — exactly 20-30 words>\n**Key:** <exact command, config, pattern, or insight to reuse — exactly 20-30 words>\n\nRules:\n- Add [error-fix] after date if an error was diagnosed and fixed\n- If unsure whether to log, skip — duplicate or noisy entries are worse than missing ones\n- Never log trivial changes, formatting, typos, or conversational sessions\n- Never log project-specific logic that wont apply elsewhere'",
+            "command": "python3 -c \"import json,subprocess,os; d=json.load(open(os.path.expanduser('~/.claude/plugins/installed_plugins.json'))); [subprocess.run(['bash',v[0]['installPath']+'/scripts/post-tool-prompt.sh']) for k,v in d['plugins'].items() if 'claude-echolog' in k and v]\" 2>/dev/null || true",
             "timeout": 5000
           }
         ]
@@ -30,7 +30,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo 'Append to ~/claude-echolog.md right now before context is wiped:\n## YYYY-MM-DD [pre-compact]\n**What:** <most important task completed so far this session — exactly 20-30 words>\n**How:** <most critical insight or pattern discovered — exactly 20-30 words>\n**Key:** <single most reusable command, config, or insight — exactly 20-30 words>\n\nDo this immediately. Do not skip.'",
+            "command": "python3 -c \"import json,subprocess,os; d=json.load(open(os.path.expanduser('~/.claude/plugins/installed_plugins.json'))); [subprocess.run(['bash',v[0]['installPath']+'/scripts/pre-compact-prompt.sh']) for k,v in d['plugins'].items() if 'claude-echolog' in k and v]\" 2>/dev/null || true",
             "timeout": 5000
           }
         ]
