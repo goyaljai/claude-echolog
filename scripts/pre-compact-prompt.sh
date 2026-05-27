@@ -1,9 +1,14 @@
 #!/bin/bash
-# PreCompact — use systemMessage (hookSpecificOutput not supported here)
-python3 -c "
-import json
-output = {
-    'systemMessage': 'Append to ~/claude-echolog.md right now before context is wiped:\n## $(date +%Y-%m-%d) [pre-compact]\n**What:** <most important task completed so far this session — exactly 20-30 words>\n**How:** <most critical insight or pattern discovered — exactly 20-30 words>\n**Key:** <single most reusable command, config, or insight — exactly 20-30 words>\n\nDo this immediately. Do not skip.'
-}
-print(json.dumps(output))
-"
+# PreCompact — Claude cannot be instructed via systemMessage (it's UI-only)
+# Strategy: write a PENDING file that UserPromptSubmit will inject next session
+# so the pre-compact context is not lost
+
+SESSION_ID="${CLAUDE_CODE_SESSION_ID:-${CLAUDE_SESSION_ID:-unknown}}"
+PENDING="$HOME/.claude/echolog-pending-$SESSION_ID.md"
+
+# Write a placeholder so next session knows a compact happened
+echo "## $(date +%Y-%m-%d) [pre-compact — pending]
+**Note:** Session compacted. Claude should fill in What/How/Key from context above if meaningful work was done." > "$PENDING"
+
+# Return empty JSON — let compact proceed
+echo '{}'

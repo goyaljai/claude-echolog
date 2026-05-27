@@ -1,13 +1,10 @@
 #!/bin/bash
-# PostCompact — use systemMessage (hookSpecificOutput not supported here)
-if [ -f "$HOME/claude-echolog.md" ]; then
-  python3 -c "
-import json
-with open('$HOME/claude-echolog.md') as f:
-    content = f.read()
-output = {
-    'systemMessage': '=== EchoLog Knowledge Base ===\n' + content + '\n=== End EchoLog ===\nUse the above knowledge base to resume this session with full context.'
-}
-print(json.dumps(output))
-"
-fi
+# PostCompact — systemMessage is UI-only, Claude doesn't act on it
+# Strategy: delete session flag so UserPromptSubmit reinjects on next prompt
+SESSION_ID="${CLAUDE_CODE_SESSION_ID:-${CLAUDE_SESSION_ID:-unknown}}"
+SESSION_FLAG="$HOME/.claude/echolog-$SESSION_ID.flag"
+
+# Remove session flag — forces reinject on next UserPromptSubmit
+rm -f "$SESSION_FLAG"
+
+echo '{}'
