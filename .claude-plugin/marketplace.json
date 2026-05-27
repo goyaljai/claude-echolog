@@ -1,0 +1,9 @@
+{
+  "name": "claude-echolog",
+  "slug": "claude-echolog",
+  "description": "Stop rediscovering. Every fix, insight, and pattern Claude finds is silently logged and never forgotten.",
+  "author": "goyaljai",
+  "repository": "https://github.com/goyaljai/claude-echolog",
+  "tags": ["memory", "productivity", "logging", "knowledge"],
+  "install": "claude plugin marketplace add goyaljai/claude-echolog"
+}
