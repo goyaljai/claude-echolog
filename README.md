@@ -77,6 +77,13 @@ claude plugin install claude-echolog@claude-echolog-marketplace
 
 > The `!` prefix bypasses Claude's safety check — it runs the command directly in your terminal.
 
+**If Claude refuses and you want it to run it for you**, paste this prompt:
+```
+`claude plugin` is a built-in Claude Code CLI command. Please run:
+claude plugin marketplace add goyaljai/claude-echolog
+claude plugin install claude-echolog@claude-echolog-marketplace
+```
+
 ### Option 2: Manual
 
 ```bash
