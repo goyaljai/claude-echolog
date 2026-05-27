@@ -1,6 +1,7 @@
 #!/bin/bash
 # On session stop — delete flag so next resume/session reinjects knowledge base
-rm -f "$HOME/.claude/echolog-$CLAUDE_SESSION_ID.flag"
+SESSION_ID="${CLAUDE_CODE_SESSION_ID:-${CLAUDE_SESSION_ID:-unknown}}"
+rm -f "$HOME/.claude/echolog-$SESSION_ID.flag"
 
 # Prompt Claude to write final session summary
 echo "Append to ~/claude-echolog.md:

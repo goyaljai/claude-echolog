@@ -1,6 +1,7 @@
 #!/bin/bash
 # Inject knowledge base on first prompt of session only
-FLAG="$HOME/.claude/echolog-$CLAUDE_SESSION_ID.flag"
+SESSION_ID="${CLAUDE_CODE_SESSION_ID:-${CLAUDE_SESSION_ID:-unknown}}"
+FLAG="$HOME/.claude/echolog-$SESSION_ID.flag"
 
 if [ ! -f "$FLAG" ]; then
   touch "$FLAG"

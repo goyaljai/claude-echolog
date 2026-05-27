@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/inject-knowledge.sh",
+            "command": "bash \"$(find $HOME/.claude/plugins/cache -name inject-knowledge.sh 2>/dev/null | head -1)\"",
             "timeout": 5000
           }
         ]
@@ -42,7 +42,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/inject-post-compact.sh",
+            "command": "bash \"$(find $HOME/.claude/plugins/cache -name inject-post-compact.sh 2>/dev/null | head -1)\"",
             "timeout": 5000
           }
         ]
@@ -54,7 +54,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/cleanup-session.sh",
+            "command": "bash \"$(find $HOME/.claude/plugins/cache -name cleanup-session.sh 2>/dev/null | head -1)\"",
             "timeout": 5000
           }
         ]
